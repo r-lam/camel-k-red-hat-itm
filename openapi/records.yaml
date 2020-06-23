@@ -1,0 +1,60 @@
+---
+openapi: 3.0.2
+info:
+  title: records
+  version: 1.0.0
+paths:
+  /:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+          description: List of `Records`.
+      operationId: getRecords
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+          description: Produced new `record`.
+      operationId: createRecord
+  /{record}:
+    get:
+      parameters:
+      - name: record
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+          description: Record listed.
+      operationId: getSingle
+components:
+  schemas:
+    Record:
+      title: Root Type for Record
+      description: ""
+      type: object
+      properties:
+        record:
+          type: string
+      example:
+        record: Tom
