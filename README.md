@@ -31,7 +31,11 @@ En el archivo application.properties se define el cluster a ocupar así como cua
 
 Para correr el ejemplo de OpenAPI-Kafka abra una terminal de VS Code, dirijase a la carpeta de 'openapi' y ejecute:
 
-```kamel run openapi.java --name api-kafka --dependency camel-undertow --dependency camel-rest --property camel.rest.port=8080 --open-api records.yaml```
+## En Linux/MacOS
+```kamel run openapi/openapi.java --name api-kafka --open-api openapi/records.yaml```
+
+## En Windows - ASEGURARSE DE ESTAR EN LA CARPETA OPENAPI
+```kamel run openapi.java --name api-kafka --open-api records.yaml```
 
 Podra observar como el operador de Camel K se encarga de levantar el contenedor y todos los recursos necesarios. Desde VS Code puede seguir los logs, dando click derecho a la integracion y click en **Follow Integration logs**.
 

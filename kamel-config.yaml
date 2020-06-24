@@ -1,0 +1,6 @@
+kamel:
+  run:
+    integration:
+      api-kafka:
+        property-files: '[openapi/application.properties]'
+        dependencies: '[camel-rest,camel-undertow]'
