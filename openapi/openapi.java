@@ -13,10 +13,8 @@ public class openapi extends RouteBuilder{
     @Override
     public void configure() throws Exception {
 
-        from("kafka:cst?brokers=kafka-kafka-bootstrap:9092" +
-                "&groupId=apps" +
-                "&autoOffsetReset=earliest")
-            .log("Message received from Kafka: ${body}")
+        from("kafka:cst?brokers={{kafka.bootstrap.address}}&groupId=apps&autoOffsetReset=earliest")
+            .log("Message: ${body}")
             .process(exchange -> {
                 kfkrecords.add(exchange.getMessage().getBody(String.class));
             });
@@ -31,9 +29,9 @@ public class openapi extends RouteBuilder{
             });
     
         from("direct:createRecord")
-            .log("Just in case... Body:${body} , Header: ${header.record}")
+            .log("Message Body: ${body}")
             .setBody(simple("${body}"))
-            .to("kafka:cst?brokers=kafka-kafka-bootstrap:9092");
+            .to("kafka:cst?brokers={{kafka.bootstrap.address}}");
     }
 
 }
