@@ -2,8 +2,8 @@ kamel:
   run:
     integration:
       api-kafka:
-        property-files: '[openapi/application.properties]'
+        property-files: '[application.properties]'
         dependencies: '[camel-rest,camel-undertow]'
       sensor:
-        property-files: '[db2db/config/application.properties]'
+        property-files: '[application.properties]'
         dependencies: '[camel-elasticsearch-rest, camel-cassandraql, camel-rest, camel-undertow]'
