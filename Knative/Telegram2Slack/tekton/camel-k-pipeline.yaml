@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: camel-k-pipeline
+spec:
+  resources:
+    - name: source-repo
+      type: git
+  tasks:
+    - name: install-operator
+      taskRef:
+        name: camel-k-install-operator
+    - name: run-printer
+      runAfter: [install-operator]
+      taskRef:
+        name: camel-k-run-integration
+      resources:
+        inputs:
+          - name: repository
+            resource: source-repo
+      params:
+        - name: file
+          value: "Knative/Telegram2Slack/printer.groovy"
+    - name: run-splitter
+      runAfter: [run-printer]
+      taskRef:
+        name: camel-k-run-integration
+      resources:
+        inputs:
+          - name: repository
+            resource: source-repo
+      params:
+        - name: file
+          value: "Knative/Telegram2Slack/splitter.groovy"
+    - name: run-feed
+      runAfter: [run-splitter]
+      taskRef:
+        name: camel-k-run-integration
+      resources:
+        inputs:
+          - name: repository
+            resource: source-repo
+      params:
+        - name: file
+          value: "Knative/Telegram2Slack/feed.groovy"

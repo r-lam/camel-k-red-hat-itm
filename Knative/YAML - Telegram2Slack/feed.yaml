@@ -1,0 +1,21 @@
+apiVersion: sources.eventing.knative.dev/v1alpha1                        
+kind: CamelSource                                                        
+metadata:                                                                
+  name: feed-knative                                            
+spec:                                                                    
+  source:                                                                
+    flow:                                                                
+      from:                                                              
+        uri: telegram:bots                                               
+        parameters:                                                      
+          authorizationToken: "aqui va el token de botfather"                    
+        steps:                                                           
+          - convert-body-to:
+              class: String
+          - to:
+              uri: "log:info"                                  
+  sink:                                                                  
+    ref:                                                                 
+      apiVersion: messaging.knative.dev/v1alpha1                         
+      kind: InMemoryChannel                                              
+      name: messages                                                   
