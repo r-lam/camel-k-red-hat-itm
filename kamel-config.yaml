@@ -2,8 +2,14 @@ kamel:
   run:
     integration:
       api-kafka:
-        property-files: '[application.properties]'
+        property-files: '[config/application.properties]'
         dependencies: '[camel-rest,camel-undertow]'
       sensor:
-        property-files: '[application.properties]'
+        property-files: '[config/application.properties]'
         dependencies: '[camel-elasticsearch-rest, camel-cassandraql, camel-rest, camel-undertow]'
+      feed:
+        property-files: '[config/application.properties]'
+      printer:
+        property-files: '[config/application.properties]'
+      splitter:
+        property-files: '[config/application.properties]'
