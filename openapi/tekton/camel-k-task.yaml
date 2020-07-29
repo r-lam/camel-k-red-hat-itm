@@ -1,0 +1,40 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: camel-k-install-operator
+spec:
+  steps:
+    - name: install
+      image: apache/camel-k:1.0.0-M2
+      command:
+        - kamel
+      args:
+        - "install"
+        - "--skip-cluster-setup"
+        - "--skip-operator-setup"
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: camel-k-run-integration
+spec:
+  params:
+    - name: pathToFile
+      type: string
+      description: The integration file to run
+      default: $(resources.inputs.repository.path)
+  resources:
+    inputs:
+      - name: repository
+        type: git
+  steps:
+    - name: run-integration
+      image: apache/camel-k:1.0.0-M2
+      workingDir: /workspace/repository
+      command:
+        - kamel
+      args:
+        - "run"
+        - "--wait"
+        - "$(params.pathToFile)"
+        - "--open-api records.yaml"

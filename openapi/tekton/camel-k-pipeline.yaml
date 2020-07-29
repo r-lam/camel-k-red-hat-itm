@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: camel-k-openapi-pipeline
+spec:
+  resources:
+    - name: source-repo
+      type: git
+  tasks:
+    - name: install-operator
+      taskRef:
+        name: camel-k-install-operator
+    - name: run-api
+      runAfter: [install-operator]
+      taskRef:
+        name: camel-k-run-integration
+      resources:
+        inputs:
+          - name: repository
+            resource: source-repo
+      params:
+        - name: file
+          value: "openapi/openapi.java"
