@@ -1,4 +1,16 @@
 apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: camel-k-examples-git
+spec:
+  type: git
+  params:
+    - name: revision
+      value: tekton
+    - name: url
+      value: https://github.com/R-Lam/camel-k-red-hat-itm
+---
+apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
   name: camel-k-install-operator
@@ -21,11 +33,13 @@ spec:
     - name: pathToFile
       type: string
       description: The integration file to run
-      default: $(resources.inputs.repository.path)
+      default: $(resources.inputs.file)
   resources:
     inputs:
       - name: repository
         type: git
+      - name: file
+        type: string
   steps:
     - name: run-integration
       image: apache/camel-k:1.0.0-M2
