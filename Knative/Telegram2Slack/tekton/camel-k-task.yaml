@@ -6,7 +6,7 @@ spec:
   type: git
   params:
     - name: revision
-      value: tekton
+      value: master
     - name: url
       value: https://github.com/R-Lam/camel-k-red-hat-itm
 ---
