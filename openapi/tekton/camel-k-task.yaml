@@ -38,3 +38,4 @@ spec:
         - "--wait"
         - "$(params.pathToFile)"
         - "--open-api records.yaml"
+        - "--property-file config/application.properties"

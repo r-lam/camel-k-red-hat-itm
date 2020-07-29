@@ -5,7 +5,7 @@ metadata:
 spec:
   pipelineRef:
     name: camel-k-openapi-pipeline
-  serviceAccount: 'camel-k-pipeline'
+  serviceAccountName: 'camel-k-pipeline'
   resources:
     - name: source-repo
       resourceRef:
