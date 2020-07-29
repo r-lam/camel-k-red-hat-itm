@@ -17,13 +17,15 @@ kind: Task
 metadata:
   name: camel-k-run-integration
 spec:
-  inputs:
-    resources:
+  params:
+    - name: pathToFile
+      type: string
+      description: The integration file to run
+      default: $(resources.inputs.repository.path)
+  resources:
+    inputs:
       - name: repository
         type: git
-    params:
-      - name: file
-        description: The integration file to run
   steps:
     - name: run-integration
       image: apache/camel-k:1.0.0-M2
@@ -33,4 +35,4 @@ spec:
       args:
         - "run"
         - "--wait"
-        - "$(inputs.params.file)"
+        - "$(params.pathToFile)"
