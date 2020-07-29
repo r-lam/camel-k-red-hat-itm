@@ -19,7 +19,7 @@ spec:
           - name: repository
             resource: source-repo
       params:
-        - name: file
+        - name: pathToFile
           value: "Knative/Telegram2Slack/printer.groovy"
     - name: run-splitter
       runAfter: [run-printer]
@@ -30,7 +30,7 @@ spec:
           - name: repository
             resource: source-repo
       params:
-        - name: file
+        - name: pathToFile
           value: "Knative/Telegram2Slack/splitter.groovy"
     - name: run-feed
       runAfter: [run-splitter]
@@ -41,5 +41,5 @@ spec:
           - name: repository
             resource: source-repo
       params:
-        - name: file
+        - name: pathToFile
           value: "Knative/Telegram2Slack/feed.groovy"

@@ -29,6 +29,10 @@ A la vez, poder producir mensajes mediante un http POST request.
 
 En el archivo application.properties se define el cluster a ocupar así como cualquier otra configuración que se desee modificar.
 
+## File Properties
+
+Debe cambiar el valor de `kafka.bootstrap.address` en el archivo `application.properties`.
+
 Para correr el ejemplo de OpenAPI-Kafka abra una terminal de VS Code, dirijase a la carpeta de 'openapi' y ejecute:
 
 ## En Linux/MacOS
