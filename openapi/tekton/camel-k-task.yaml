@@ -1,17 +1,14 @@
 apiVersion: tekton.dev/v1alpha1
-kind: Task
+kind: PipelineResource
 metadata:
-  name: camel-k-install-operator
+  name: camel-k-examples-git
 spec:
-  steps:
-    - name: install
-      image: apache/camel-k:1.0.0-M2
-      command:
-        - kamel
-      args:
-        - "install"
-        - "--skip-cluster-setup"
-        - "--skip-operator-setup"
+  type: git
+  params:
+    - name: revision
+      value: Lam
+    - name: url
+      value: https://github.com/R-Lam/camel-k-red-hat-itm
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Task

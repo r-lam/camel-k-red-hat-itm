@@ -7,11 +7,7 @@ spec:
     - name: source-repo
       type: git
   tasks:
-    - name: install-operator
-      taskRef:
-        name: camel-k-install-operator
     - name: run-api
-      runAfter: [install-operator]
       taskRef:
         name: camel-k-run-integration
       resources:
