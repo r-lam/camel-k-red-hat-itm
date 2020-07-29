@@ -26,7 +26,7 @@ spec:
         type: git
   steps:
     - name: run-integration
-      image: apache/camel-k:1.0.0-M2
+      image: apache/camel-k:1.1.0
       workingDir: /workspace/repository
       command:
         - kamel
