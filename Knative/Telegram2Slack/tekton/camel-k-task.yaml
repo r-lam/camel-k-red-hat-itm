@@ -33,13 +33,10 @@ spec:
     - name: pathToFile
       type: string
       description: The integration file to run
-      default: $(resources.inputs.file)
   resources:
     inputs:
       - name: repository
         type: git
-      - name: file
-        type: string
   steps:
     - name: run-integration
       image: apache/camel-k:1.0.0-M2
