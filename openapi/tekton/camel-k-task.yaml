@@ -35,6 +35,6 @@ spec:
         - "--wait"
         - "$(params.pathToFile)"
         - "--open-api"
-        - "records.yaml"
+        - "openapi/records.yaml"
         - "--property-file"
         - "config/application.properties"
