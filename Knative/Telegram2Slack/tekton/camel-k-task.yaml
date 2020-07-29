@@ -21,8 +21,8 @@ spec:
       command:
         - kamel
       args:
-        - "install"
-        - "--skip-cluster-setup"
+        - install
+        - --skip-cluster-setup
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Task

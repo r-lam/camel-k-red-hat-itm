@@ -10,6 +10,19 @@ metadata:
   name: camel-k-pipeline
 rules:
   - apiGroups:
+    - extensions
+    resources:
+      - ingresses
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
       - camel.apache.org
     resources:
       - "*"
