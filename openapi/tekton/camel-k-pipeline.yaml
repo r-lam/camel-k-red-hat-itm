@@ -19,5 +19,5 @@ spec:
           - name: repository
             resource: source-repo
       params:
-        - name: file
+        - name: pathToFile
           value: "openapi/openapi.java"
