@@ -9,6 +9,6 @@ public class Sample extends org.apache.camel.builder.RouteBuilder {
 
         from("direct:hello")
             .setHeader(Exchange.CONTENT_TYPE, constant("text/plain"))
-            .transform().simple("Hello World from Camel K!");
+            .transform().simple("Hello World from Camel K");
     }
 }
