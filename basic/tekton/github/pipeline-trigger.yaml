@@ -44,4 +44,4 @@ spec:
       resources:
         - name: source-repo
           resourceRef:
-            name: source-repo-$(params.gitrepositoryurl)
+            name: camel-k-examples-git
