@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: camel-k-basic-pipeline
+spec:
+  resources:
+    - name: source-repo
+      type: git
+    - name: event-to-sink
+      type: cloudEvent
+  tasks:
+    - name: run-basic
+      taskRef:
+        name: camel-k-run-integration
+      resources:
+        inputs:
+          - name: repository
+            resource: source-repo
+      params:
+        - name: pathToFile
+          value: "basic/Sample.java"

@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: camel-k-run-integration
+spec:
+  params:
+    - name: pathToFile
+      type: string
+      description: The integration file to run
+      default: $(resources.inputs.repository.path)
+  resources:
+    inputs:
+      - name: repository
+        type: git
+  steps:
+    - name: run-integration
+      image: apache/camel-k:1.1.0
+      workingDir: /workspace/repository
+      command:
+        - kamel
+      args:
+        - "run"
+        - "--wait"
+        - "$(params.pathToFile)"
+        - "--property-file"
+        - "config/application.properties"

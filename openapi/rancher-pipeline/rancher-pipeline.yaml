@@ -1,0 +1,22 @@
+# example
+stages:
+  - name: Run integration
+    # Conditions for stages
+    when:
+      branch: Lam
+      event: [ push, pull_request ]
+    # Multiple steps run concurrently
+    steps:
+    - runScriptConfig:
+        image: apache/camel-k:1.1.0
+        shellScript: kamel run --wait ${FILE} --open-api ${API}
+      # Set environment variables in container for the step
+      env:
+        FILE: openapi/openapi.java
+        API: openapi/records.yaml
+# branch conditions for the pipeline
+branch:
+  include: [ Lam ]
+  exclude: [ dev ]
+# timeout in minutes
+timeout: 30
