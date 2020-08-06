@@ -1,0 +1,115 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: camel-k-basic-pipeline
+spec:
+  resources:
+    - name: source-repo
+      type: git
+    - name: event-to-sink
+      type: cloudEvent
+  tasks:
+    - name: run-basic
+      taskRef:
+        name: camel-k-run-integration
+      resources:
+        inputs:
+          - name: repository
+            resource: source-repo
+      params:
+        - name: pathToFile
+          value: "basic/Sample.java"
+    - name: deploy-locally
+      taskRef:
+        name: deploy-locally
+      resources:
+        inputs:
+          - name: image-source
+            resource: image-source
+            from:
+              - build-docker-image
+        outputs:
+          - name: event-to-sink
+            resource: event-to-sink
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-locally
+  namespace: getting-started
+spec:
+  resources:
+    inputs:
+      - name: image-source
+        type: image
+    outputs:
+    - name: event-to-sink
+      type: cloudEvent
+  steps:
+    - name: run-kubectl
+      image: lachlanevenson/k8s-kubectl
+      command: ["kubectl"]
+      args:
+        - "run"
+        - "tekton-triggers-built-me"
+        - "--image"
+        - "${resources.inputs.image-source.url}"
+        - "--env=PORT=8080"
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: camel-k-run-integration
+spec:
+  params:
+    - name: pathToFile
+      type: string
+      description: The integration file to run
+      default: $(resources.inputs.repository.path)
+  resources:
+    inputs:
+      - name: repository
+        type: git
+  steps:
+    - name: run-integration
+      image: apache/camel-k:1.1.0
+      workingDir: /workspace/repository
+      command:
+        - kamel
+      args:
+        - "run"
+        - "--wait"
+        - "$(params.pathToFile)"
+        - "--property-file"
+        - "config/application.properties"
+---
+# Finally, we need something to receive our cloudevent announcing success!
+# That is this services only purpose
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-display
+  namespace: demo
+  labels:
+    app: event-display
+spec:
+  type: ClusterIP
+  ports:
+    - name: listener
+      port: 8080
+      protocol: TCP
+  selector:
+    app: event-display
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: event-display
+  namespace: demo
+  labels:
+    app: event-display
+spec:
+  hostname: event-display
+  containers:
+  - image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display
+    name: web

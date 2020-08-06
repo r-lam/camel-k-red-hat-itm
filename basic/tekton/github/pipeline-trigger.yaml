@@ -6,23 +6,12 @@ spec:
   params:
   - name: gitrevision
     description: The git revision
-    default: Lam
+    default: master
   - name: gitrepositoryurl
     description: The git repository url
     default: https://github.com/R-Lam/camel-k-red-hat-itm
   resourcetemplates:
-  - apiVersion: tekton.dev/v1alpha1
-    kind: PipelineResource
-    metadata:
-      name: source-repo-$(params.gitrepositoryurl)
-    spec:
-      type: git
-      params:
-      - name: revision
-        value: $(params.gitrevision)
-      - name: url
-        value: $(params.gitrepositoryurl)
-  - apiVersion: tekton.dev/v1alpha1
+  - apiVersion: tekton.dev/v1beta1
     kind: PipelineResource
     metadata:
       name: camel-k-examples-git
@@ -33,15 +22,42 @@ spec:
           value: Lam
         - name: url
           value: https://github.com/R-Lam/camel-k-red-hat-itm
-  - apiVersion: tekton.dev/v1alpha1
+  - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
       name: camel-k-basic-pipeline-run-1
     spec:
       pipelineRef:
         name: camel-k-basic-pipeline
-      serviceAccountName: 'camel-k-pipeline'
+      serviceAccountName: 'tekton-camel-k'
       resources:
         - name: source-repo
           resourceRef:
             name: camel-k-examples-git
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: github-pipelinebinding
+  namespace: demo
+spec:
+  params:
+    - name: gitrevision
+      value: $(body.head_commit.id)
+    - name: namespace
+      value: demo
+    - name: gitrepositoryurl
+      value: "https://github.com/$(body.repository.full_name)"
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: github-listener
+  namespace: demo
+spec:
+  serviceAccountName: tekton-camel-k
+  triggers:
+    - bindings:
+      - ref: github-pipelinebinding
+      template:
+        name: github-triggertemplate
