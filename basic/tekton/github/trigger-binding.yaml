@@ -7,7 +7,7 @@ spec:
   - name: gitrevision
     value: $(body.head_commit.id)
   - name: namespace
-    value: demo-pipelines
+    value: demo
   - name: gitrepositoryurl
     value: $(body.repository.url)
   - name: gitrepositoryname
