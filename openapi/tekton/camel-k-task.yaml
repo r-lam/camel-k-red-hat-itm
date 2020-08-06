@@ -6,23 +6,9 @@ spec:
   type: git
   params:
     - name: revision
-      value: master
+      value: Lam
     - name: url
       value: https://github.com/R-Lam/camel-k-red-hat-itm
----
-apiVersion: tekton.dev/v1alpha1
-kind: Task
-metadata:
-  name: camel-k-install-operator
-spec:
-  steps:
-    - name: install
-      image: apache/camel-k:1.1.0
-      command:
-        - kamel
-      args:
-        - install
-        - --skip-cluster-setup
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Task
@@ -33,6 +19,7 @@ spec:
     - name: pathToFile
       type: string
       description: The integration file to run
+      default: $(resources.inputs.repository.path)
   resources:
     inputs:
       - name: repository
@@ -47,3 +34,7 @@ spec:
         - "run"
         - "--wait"
         - "$(params.pathToFile)"
+        - "--open-api"
+        - "openapi/records.yaml"
+        - "--property-file"
+        - "config/application.properties"

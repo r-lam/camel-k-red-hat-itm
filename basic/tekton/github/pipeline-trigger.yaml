@@ -1,0 +1,47 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: github-triggertemplate
+spec:
+  params:
+  - name: gitrevision
+    description: The git revision
+    default: Lam
+  - name: gitrepositoryurl
+    description: The git repository url
+    default: https://github.com/R-Lam/camel-k-red-hat-itm
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1alpha1
+    kind: PipelineResource
+    metadata:
+      name: source-repo-$(params.gitrepositoryurl)
+    spec:
+      type: git
+      params:
+      - name: revision
+        value: $(params.gitrevision)
+      - name: url
+        value: $(params.gitrepositoryurl)
+  - apiVersion: tekton.dev/v1alpha1
+    kind: PipelineResource
+    metadata:
+      name: camel-k-examples-git
+    spec:
+      type: git
+      params:
+        - name: revision
+          value: Lam
+        - name: url
+          value: https://github.com/R-Lam/camel-k-red-hat-itm
+  - apiVersion: tekton.dev/v1alpha1
+    kind: PipelineRun
+    metadata:
+      name: camel-k-basic-pipeline-run-1
+    spec:
+      pipelineRef:
+        name: camel-k-basic-pipeline
+      serviceAccountName: 'camel-k-pipeline'
+      resources:
+        - name: source-repo
+          resourceRef:
+            name: camel-k-examples-git
