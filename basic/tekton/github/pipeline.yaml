@@ -65,7 +65,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: build-docker-image
-  namespace: getting-started
+  namespace: demo
 spec:
   params:
   - name: pathToContext
