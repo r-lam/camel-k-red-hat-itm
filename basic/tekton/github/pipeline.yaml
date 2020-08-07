@@ -64,6 +64,36 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
+  name: build-docker-image
+  namespace: getting-started
+spec:
+  params:
+  - name: pathToContext
+    description:
+      The build directory used by img
+    default: /workspace/source-repo
+  resources:
+    inputs:
+      - name: source-repo
+        type: git
+    outputs:
+      - name: builtImage
+        type: image
+  steps:
+    - name: build-and-push
+      image: r.j3ss.co/img
+      command:
+        - /usr/bin/img
+      args:
+        - build
+        - -t
+        - "$(resources.outputs.builtImage.url)"
+        - --no-cache
+        - "$(params.pathToContext)"
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
   name: camel-k-run-integration
 spec:
   params:
