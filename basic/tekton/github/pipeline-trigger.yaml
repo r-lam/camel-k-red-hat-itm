@@ -11,7 +11,7 @@ spec:
     description: The git repository url
     default: https://github.com/R-Lam/camel-k-red-hat-itm
   resourcetemplates:
-  - apiVersion: tekton.dev/v1beta1
+  - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
     metadata:
       name: camel-k-examples-git
