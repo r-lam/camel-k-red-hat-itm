@@ -11,6 +11,9 @@ spec:
     - name: event-to-sink
       type: cloudEvent
   tasks:
+    - name: build-docker-image
+      taskRef:
+        name: build-docker-image
     - name: run-basic
       taskRef:
         name: camel-k-run-integration
