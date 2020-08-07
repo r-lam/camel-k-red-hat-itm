@@ -6,6 +6,8 @@ spec:
   resources:
     - name: source-repo
       type: git
+    - name: image-source
+      type: image
     - name: event-to-sink
       type: cloudEvent
   tasks:
@@ -16,6 +18,9 @@ spec:
         inputs:
           - name: repository
             resource: source-repo
+        outputs:
+          - name: builtImage
+            resource: image-source
       params:
         - name: pathToFile
           value: "basic/Sample.java"
