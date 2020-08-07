@@ -6,8 +6,6 @@ spec:
   resources:
     - name: source-repo
       type: git
-    - name: image-source
-      type: image
     - name: event-to-sink
       type: cloudEvent
   tasks:
@@ -21,78 +19,9 @@ spec:
         inputs:
           - name: repository
             resource: source-repo
-        outputs:
-          - name: builtImage
-            resource: image-source
       params:
         - name: pathToFile
           value: "basic/Sample.java"
-    - name: deploy-locally
-      taskRef:
-        name: deploy-locally
-      resources:
-        inputs:
-          - name: image-source
-            resource: image-source
-            from:
-              - build-docker-image
-        outputs:
-          - name: event-to-sink
-            resource: event-to-sink
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: deploy-locally
-  namespace: demo
-spec:
-  resources:
-    inputs:
-      - name: image-source
-        type: image
-    outputs:
-    - name: event-to-sink
-      type: cloudEvent
-  steps:
-    - name: run-kubectl
-      image: lachlanevenson/k8s-kubectl
-      command: ["kubectl"]
-      args:
-        - "run"
-        - "tekton-triggers-built-me"
-        - "--image"
-        - "${resources.inputs.image-source.url}"
-        - "--env=PORT=8080"
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: build-docker-image
-  namespace: demo
-spec:
-  params:
-  - name: pathToContext
-    description:
-      The build directory used by img
-    default: /workspace/source-repo
-  resources:
-    inputs:
-      - name: source-repo
-        type: git
-    outputs:
-      - name: builtImage
-        type: image
-  steps:
-    - name: build-and-push
-      image: r.j3ss.co/img
-      command:
-        - /usr/bin/img
-      args:
-        - build
-        - -t
-        - "$(resources.outputs.builtImage.url)"
-        - --no-cache
-        - "$(params.pathToContext)"
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
