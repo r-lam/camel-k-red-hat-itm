@@ -2,7 +2,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tekton-camel-k
-  namespace: getting-started
+  namespace: demo
 rules:
 - apiGroups:
   - ""
