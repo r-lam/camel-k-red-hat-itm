@@ -22,4 +22,4 @@ spec:
   - name: ExternalDomain
     value: 35.239.245.144
   timeout: 1000s
-  serviceAccountName: tekton-triggers-createwebhook
+  serviceAccountName: tekton-camel-k
