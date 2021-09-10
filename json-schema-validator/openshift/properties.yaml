@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-properties
+data:
+  application.properties: |
+    REST_ENDPOINT_ECHO=

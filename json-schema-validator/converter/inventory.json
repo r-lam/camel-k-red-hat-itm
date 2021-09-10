@@ -1,0 +1,181 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "InventoryDemo",
+        "version": "1.0.1"
+    },
+    "paths": {
+        "/customers": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Customer"
+                                    }
+                                },
+                                "examples": {
+                                    "John": {
+                                        "value": [
+                                            {
+                                                "id": 63,
+                                                "first_name": "some text",
+                                                "last_name": "some text",
+                                                "email": "some text"
+                                            },
+                                            {
+                                                "id": 42,
+                                                "first_name": "some text",
+                                                "last_name": "some text",
+                                                "email": "some text"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Customers List"
+                    }
+                },
+                "operationId": "getCustomers"
+            }
+        },
+        "/customers/{customerId}": {
+            "get": {
+                "parameters": [
+                    {
+                        "examples": {
+                            "id": {
+                                "value": "233"
+                            }
+                        },
+                        "name": "customerId",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                },
+                                "examples": {
+                                    "John": {
+                                        "value": {
+                                            "id": 233,
+                                            "first_name": "John",
+                                            "last_name": "Travolta",
+                                            "email": "john@noorg.com"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Customer Found"
+                    },
+                    "404": {
+                        "description": "Customer not found"
+                    }
+                },
+                "operationId": "getCustomer"
+            },
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            },
+                            "examples": {
+                                "Sara": {
+                                    "value": {
+                                        "id": 73,
+                                        "first_name": "Sara",
+                                        "last_name": "Hog",
+                                        "email": "sara@hog.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "parameters": [
+                    {
+                        "examples": {
+                            "id": {
+                                "value": "32"
+                            }
+                        },
+                        "name": "customerId",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                },
+                                "examples": {
+                                    "Sara": {
+                                        "value": {
+                                            "id": 45,
+                                            "first_name": "Sara",
+                                            "last_name": "Hogg",
+                                            "email": "sara@noorg.com"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Customer Updated"
+                    }
+                },
+                "operationId": "updateCustomer"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Customer": {
+                "title": "Root Type for Customer",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "id": 1004,
+                    "first_name": "Anne",
+                    "last_name": "Ketchmar",
+                    "email": "annek@noanswer.org"
+                }
+            }
+        }
+    }
+}
